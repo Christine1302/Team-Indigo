@@ -1,0 +1,65 @@
+import numpy as np
+import random
+
+
+class Person(object):
+    def __init__(self):
+        self.status = "Susceptible"
+        self.days_sick = 0
+        self.sickness_rate = 10
+
+    def infect(self, number_of_days_sick):
+        self.status = "Infected"
+        self.days_sick = number_of_days_sick
+
+    def recover(self):
+        self.status = "Recovered"
+        self.days_sick = 0
+
+    def update(self):
+        self.days_sick = self.days_sick - 1
+        if (self.days_sick < 0):
+            self.recover()
+
+
+Joe = Person()
+Jane = Person()
+Jane.sickness_rate = 15
+day = 0
+
+while (Joe.status != "Recovered"):
+    day = day + 1
+
+    if (Joe.status != "Infected"):
+        chance_of_getting_sick = random.randint(0, 101)  #roll the die
+
+        if (chance_of_getting_sick < Joe.sickness_rate):  #did joe get sick
+            Joe.infect(4)
+
+    elif (Joe.status == "Infected"):
+        if (Jane.status != "Infected"):
+            chance_of_getting_sick = random.randint(0, 101)  #roll the die
+
+            if (chance_of_getting_sick < Jane.sickness_rate):  #did joe get sick
+                Jane.infect(4)
+
+        elif (Jane.status == "Infected"):
+            Jane.update()
+        print("Jane is " + Jane.status + " day:" + str(day))
+        Joe.update()
+
+    print("Joe is " + Joe.status + " day:" + str(day))
+    
+while (Jane.status == "Susceptible"):
+    day = day + 1
+  
+    if (Jane.status != "Infected"):
+        chance_of_getting_sick = random.randint(0, 101)  #roll the die
+
+        if (chance_of_getting_sick < Jane.sickness_rate):  #did joe get sick
+            Jane.infect(4)
+
+    elif (Jane.status == "Infected"):
+        Jane.update()
+
+    print("Jane is " + Jane.status + " day:" + str(day))
